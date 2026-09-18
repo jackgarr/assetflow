@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f6f8;
+        }
+
+        .navbar {
+            background-color: #1f2937;
+            color: white;
+            padding: 15px 25px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .nav-links {
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            margin-right: 15px;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 10px;
+            width: 300px;
+        }
+
+        .add-form {
+            margin-bottom: 20px;
+        }
+
+        .add-form input {
+            padding: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .add-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e5e7eb;
+        }
+
+        .low-stock {
+            color: red;
+            font-weight: bold;
+        }
+
+        .in-stock {
+            color: green;
+            font-weight: bold;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            margin-right: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .in-btn {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .out-btn {
+            background-color: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top navigation bar -->
+    <div class="navbar">AssetFlow</div>
+
+    <div class="container">
+    {% include 'nav.html' %}
+
+        <!-- Search section for finding items -->
+        <div class="top-row">
+            <div class="search-box">
+                <input id="inventory-search" type="search" placeholder="Search by item name or SKU" aria-label="Search inventory">
+            </div>
+        </div>
+
+        <!-- Form for adding a new inventory item -->
+        <form method="POST" class="add-form">
+            <input type="text" name="name" placeholder="Item Name" required>
+            <input type="text" name="sku" placeholder="SKU" required>
+            <input type="number" name="quantity" placeholder="Quantity" required>
+            <button type="submit" class="add-btn">+ Add Item</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>Item Name</th>
+                <th>SKU</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+
+{% for item in items %}
+<tr class="inventory-row">
+    <td>{{ item['name'] }}</td>
+    <td>{{ item['sku'] }}</td>
+    <td>{{ item['quantity'] }}</td>
+    <td>
+        {% if item['quantity'] > 5 %}
+            <span class="in-stock">In Stock</span>
+        {% else %}
+            <span class="low-stock">Low Stock</span>
+        {% endif %}
+    </td>
+    <td>{{ item['created_at'] }}</td>
+    <td>
+        <form method="POST" action="/stock_in" style="display:inline;">
+            <input type="hidden" name="id" value="{{ item['id'] }}">
+            <button class="action-btn in-btn">Stock In</button>
+        </form>
+
+        <form method="POST" action="/stock_out" style="display:inline;">
+            <input type="hidden" name="id" value="{{ item['id'] }}">
+            <button class="action-btn out-btn">Stock Out</button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+        </table>
+    </div>
+    <script>
+        const search = document.getElementById('inventory-search');
+        const rows = document.querySelectorAll('.inventory-row');
+        search.addEventListener('input', () => {
+            const query = search.value.toLowerCase().trim();
+            rows.forEach(row => {
+                row.hidden = !row.textContent.toLowerCase().includes(query);
+            });
+        });
+    </script>
+</body>
+</html>

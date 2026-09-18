@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f6f8;
+        }
+
+        .navbar {
+            background-color: #1f2937;
+            color: white;
+            padding: 15px 25px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .nav-links {
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            margin-right: 15px;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .billing-form {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #ddd;
+        }
+
+        .billing-form input,
+        .billing-form select {
+            padding: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            min-width: 180px;
+        }
+
+        .save-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .summary-box {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #ddd;
+        }
+
+        .summary-box p {
+            margin: 8px 0;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main top navigation bar -->
+    <div class="navbar">AssetFlow</div>
+
+    <div class="container">
+    {% include 'nav.html' %}
+
+        <div class="section-title">Billing</div>
+
+        <!-- Billing form for saving a new transaction -->
+        <form method="POST" action="/billing" class="billing-form">
+            <select name="item" required>
+                <option value="">Select Item</option>
+                {% for item in items %}
+                    <option value="{{ item['id'] }}">
+                        {{ item['name'] }} (Stock: {{ item['quantity'] }})
+                    </option>
+                {% endfor %}
+            </select>
+
+            <input type="number" name="quantity" placeholder="Quantity" min="1" required>
+            <input type="text" name="customer" placeholder="Customer Name">
+            <button type="submit" class="save-btn">Save Transaction</button>
+        </form>
+
+        <!-- Summary section showing billing note -->
+        <div class="summary-box">
+            <p><strong>Billing transactions will appear below after saving.</strong></p>
+            <p>Current total uses a temporary flat rate of $20 per item.</p>
+        </div>
+
+        <!-- Table displays all saved billing transactions -->
+        <table>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Total Charge</th>
+                <th>Date</th>
+            </tr>
+
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction['id'] }}</td>
+                <td>{{ transaction['item_name'] }}</td>
+                <td>{{ transaction['quantity'] }}</td>
+                <td>${{ "%.2f"|format(transaction['total_charge']) }}</td>
+                <td>{{ transaction['created_at'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

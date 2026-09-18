@@ -1,0 +1,18 @@
+<div class="nav-links">
+    <!-- Main navigation links -->
+    <a href="/">Home</a>
+    <a href="/inventory">Inventory</a>
+    <a href="/billing">Billing</a>
+
+    <!-- Reports visible for admin and manager -->
+    {% if session.role in ['admin', 'manager'] %}
+        <a href="/reports">Reports</a>
+    {% endif %}
+
+    <!-- User management visible only for admin -->
+    {% if session.role == 'admin' %}
+        <a href="/user_management">User Management</a>
+    {% endif %}
+
+    <a href="/logout">Logout</a>
+</div>
