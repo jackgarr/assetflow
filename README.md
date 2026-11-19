@@ -81,3 +81,14 @@ inventory-billing-system/
 - Jackson Garrett
 - Jacob Schlautman
 - Mahroush Chowdhury
+
+## Application Screenshots
+
+### Login Page
+![AssetFlow Login](screenshots/login.png)
+
+### Inventory Management
+![AssetFlow Inventory Dashboard](screenshots/inventory.png)
+
+### Billing System
+![AssetFlow Billing Page](screenshots/billing.png)

@@ -5,3 +5,4 @@ venv/
 .env
 inventory.db
 .DS_Store
+*.db
