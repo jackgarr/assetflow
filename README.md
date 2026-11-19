@@ -61,9 +61,10 @@ These credentials are for local demonstration only. Change them before deploying
 ## Project structure
 
 ```text
-inventory-billing-system/
+assetflow/
 ├── app.py
 ├── schema.sql
+├── screenshots/
 ├── requirements.txt
 ├── templates/
 └── README.md
@@ -75,6 +76,23 @@ inventory-billing-system/
 - Set a persistent `SECRET_KEY` environment variable for deployment.
 - The generated SQLite database is ignored by Git so local accounts and activity logs are not published.
 - This is an educational project and should receive additional production hardening before an Internet-facing deployment.
+
+## My Contributions
+
+I worked on AssetFlow as part of a three-person software
+engineering team at the University of Michigan-Flint.
+
+My primary responsibilities included:
+
+- Developing the user interface using HTML and CSS.
+- Connecting the interface to database-backed functionality.
+- Integrating inventory management and billing workflows
+  into the application.
+- Collaborating with teammates responsible for database
+  development.
+
+This project gave me hands-on experience with full-stack
+web development, database integration, and teamwork.
 
 ## Team
 
